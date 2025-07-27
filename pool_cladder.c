@@ -7,10 +7,13 @@
 #define PATH_JOGOS "jogos.txt" 
 #define PATH_ID "jogos_id.txt" 
 #define QTD_RODADAS 5
+#define MAX_PALAVRA 7
+#define MAX_DICA 256
+
 
 typedef struct {
-    char palavra[7];
-    char dica[256];
+    char palavra[MAX_PALAVRA];
+    char dica[MAX_DICA];
 } Rodada;
 
 
@@ -28,7 +31,7 @@ int main(){
     FILE *arqv;
     arqv = fopen (PATH_JOGOS, "r");
     if( arqv == NULL ) {
-        printf("ERRO arquivo nao encontrado\n");
+        printf("ERRO arquivo %s nao encontrado.\n", PATH_JOGOS);
         exit(1);
     }
     
@@ -60,7 +63,10 @@ void get_rodada(Rodada *r, char id[]){
     
     int isrodada = 0;
     FILE *arqv = fopen(PATH_JOGOS, "r");
-    
+    if( arqv == NULL ) {
+        printf("ERRO arquivo %s nao encontrado.\n", PATH_JOGOS);
+        exit(1);
+    }
     int i = 0;
     char line[266];
     while(fgets(line, 266, arqv)){
@@ -168,6 +174,10 @@ char* arquivo(){
     printf("-----CLADDER VERSAO POBRE-----\n");
     printf("------ARQUIVO-----------------\n");
     arqv = fopen(PATH_ID, "r");
+    if( arqv == NULL ) {
+        printf("ERRO arquivo %s nao encontrado.\n", PATH_ID);
+        exit(1);
+    }
     while(fgets(line, 3, arqv)){
         if(line != NULL){
             int num = atoi(line);

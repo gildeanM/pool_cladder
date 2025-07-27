@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define PATH "jogos.txt"
+#define PATH_JOGOS "jogos.txt"
 #define PATH_ID "jogos_id.txt"
 #define QTD_RODADAS 5
 
@@ -24,8 +24,11 @@ void add_palavra(){
     
     char palavra[qtd_letras+1];
     char dica[250] = "inicial";
-    
-    FILE *arqv = fopen(PATH, "a");
+    FILE *arqv = fopen(PATH_JOGOS, "a+");
+    if(arqv == NULL){
+        printf("ERRO arquivo %s nao encontrado.\n", PATH_JOGOS);
+        exit(1);
+    }
     fprintf(arqv, "%s\n", incrementa_id());
     for(int i = 0; i < QTD_RODADAS; i++){
         
@@ -52,13 +55,18 @@ char* incrementa_id(){
     int num = 1;
     
     FILE *arqv = fopen(PATH_ID, "a+");
+    if(arqv == NULL){
+        printf("ERRO arquivo %s nao encontrado.\n", PATH_ID);
+        exit(1);
+    }
     while(fgets(str, 3, arqv));
     if(str != NULL)
         num = atoi(str);
 
-    sprintf(str, "%d", ++num);
-    fprintf(arqv, "\n");
-    fprintf(arqv, str);
+
+    snprintf(str,12, "%d", ++num);
+    fprintf(arqv, "%s\n",str);
+
 
     fclose(arqv);
 
